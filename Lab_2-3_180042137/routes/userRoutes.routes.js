@@ -1,16 +1,27 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express');
+const userRoutes = express.Router();
+const bodyParser = require('body-parser')
+const isLoggedIn = require('./../middleware/auth.middleware');
 
-router.get("/login.html", (req,res) => {
-    res.sendFile("login.html",{root:"./views/users"})
-});
+const {
+    getRegister, 
+    postLogin, 
+    postRegister, 
+    getLogin,
+    postDashBoard
+} = require("./../controllers/userControllers.js")
 
-router.get("/register.html", (req,res) => {
-    res.sendFile("register.html",{root:"./views/users"})
-});
+userRoutes.use(bodyParser.urlencoded({extended: false}));
+userRoutes.use(bodyParser.json());
 
-router.get("/dashboard.html", (req,res) => {
-    res.sendFile("dashboard.html",{root:"./views/users"})
-});
+userRoutes.get("/login", getLogin);
 
-module.exports = router;
+userRoutes.post("/login", isLoggedIn, postLogin);
+
+userRoutes.post("/dashboard", isLoggedIn, postDashBoard);
+
+userRoutes.get("/register", getRegister);
+
+userRoutes.post("/register", postRegister);
+
+module.exports = userRoutes;
