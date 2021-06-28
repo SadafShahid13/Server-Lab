@@ -1,11 +1,16 @@
 const express = require("express");
-const router = express.router();
+const router = express.Router();
 
-app.get("/login", (req,res) => {
-    res.send("<H1>Login Page</H1>")
+router.get("/login.html", (req,res) => {
+    res.sendFile("login.html",{root:"./views/users"})
 });
 
-app.get("/register", (req,res) => {
-    res.send("<H1>Register Page</H1>")
+router.get("/register.html", (req,res) => {
+    res.sendFile("register.html",{root:"./views/users"})
 });
 
+router.get("/dashboard.html", (req,res) => {
+    res.sendFile("dashboard.html",{root:"./views/users"})
+});
+
+module.exports = router;

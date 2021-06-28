@@ -3,6 +3,7 @@ const app = require('./app');
 const mysql = require('mysql');
 const PORT = process.env.PORT;
 
+
 const connection = mysql.createConnection({
   host     : process.env.Host,
   user     : process.env.User,
@@ -24,3 +25,4 @@ connection.connect((err)=>{
     }
 })
 
+module.exports = app;
