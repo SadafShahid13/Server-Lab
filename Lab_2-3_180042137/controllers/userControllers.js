@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+const saltRounds = process.env.saltRounds;
 const mysql = require('mysql');
 const isLoggedIn = require('../middleware/auth.middleware');
 require(`dotenv`).config()
@@ -27,7 +29,12 @@ const postRegister = (req, res)=>{
         database : process.env.DBName
     })
 
-    const sqlQuery = "INSERT INTO users (email, Name, Gender, Password) VALUES ('" + email + "', '" + username + "', '" + gender + "', '" + password + "')";
+    const hash = bcrypt.hash(password, saltRounds, function(err, hash) 
+    {
+        console.log(hash)
+    });
+
+    const sqlQuery = "INSERT INTO users (email, Name, Gender, Password) VALUES ('" + email + "', '" + username + "', '" + gender + "', '" + hash + "')";
 
     // console.log("Query= " + sqlQuery);
 

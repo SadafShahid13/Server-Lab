@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require("express");
 const mysql = require('mysql');
 
@@ -21,7 +22,7 @@ const isLoggedIn = (req, res, next)=>{
         console.log(result);
 
         console.log(result[0].Password + ' ' + password);
-        if(result.length >= 1 && password == result[0].Password){
+        if(result.length >= 1 && bcrypt.compareSync(password, result[0].Password)){
             db.release;
             next();
         }  
