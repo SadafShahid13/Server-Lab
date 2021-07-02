@@ -1,7 +1,6 @@
-const bcrypt = require('bcrypt');
-const saltRounds = process.env.saltRounds;
+var bcrypt = require('bcrypt');
+var saltRounds = process.env.SaltRounds;
 const mysql = require('mysql');
-const isLoggedIn = require('../middleware/auth.middleware');
 require(`dotenv`).config()
 
 const getRegister = (req, res)=>{
@@ -12,8 +11,8 @@ const postRegister = (req, res)=>{
 
     const email = req.body.email;
     const username = req.body.username;
-    const password = req.body.password;
-    const password2 = req.body.password2;
+    var password = req.body.password;
+    var password2 = req.body.password2;
     const gender = req.body.gender;
 
     if(password != password2){
@@ -28,11 +27,11 @@ const postRegister = (req, res)=>{
         password : process.env.DBPass,
         database : process.env.DBName
     })
-
-    const hash = bcrypt.hash(password, saltRounds, function(err, hash) 
-    {
-        console.log(hash)
-    });
+    
+    password = password.toString();
+    var salt = bcrypt.genSaltSync(parseInt(saltRounds));
+    var hash = bcrypt.hashSync(password, salt);
+    console.log(hash); //Store this in the db.
 
     const sqlQuery = "INSERT INTO users (email, Name, Gender, Password) VALUES ('" + email + "', '" + username + "', '" + gender + "', '" + hash + "')";
 
