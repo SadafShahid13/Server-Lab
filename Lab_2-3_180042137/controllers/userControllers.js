@@ -15,13 +15,30 @@ const userRoutes = require('../routes/userRoutes.routes');
 var saltRounds = process.env.SaltRounds;
 
 const getLogin = (req,res) => {
-    res.render("users/login.ejs");
+    res.render("users/login.ejs", {errors:req.flash('errors')});
 };
 
 const postLogin = (req,res) => {
     var {email, password} = req.body;
-    console.log(email);
-    console.log(password);
+    var sqlQuery = "SELECT password FROM users WHERE Email='" + email + "'";
+    db.query(sqlQuery, (err, result) => {
+        if(err) {
+            res.redirect('/users/login')
+            throw err;
+        }
+        else{
+            if(bcrypt.compareSync(password, result[0].password)){
+                res.redirect('/dashboard')
+            }
+            else{
+                errors.push("Wrong Password");
+                req.flash("errors",errors)
+                res.redirect("/users/login")
+            }
+        }
+    })
+    db.release;
+    
 };
 
 const getRegister = (req,res) => {
@@ -66,7 +83,7 @@ const postRegister = (req,res) => {
                     var salt = bcrypt.genSaltSync(parseInt(saltRounds));
                     var hash = bcrypt.hashSync(password, salt);
                     console.log(hash); //Store this in the db.
-                    sqlQuery = "INSERT INTO users (email, Name, Password) VALUES ('" + email + "', '" + name + "', '" + hash + "')";
+                    var sqlQuery = "INSERT INTO users (email, Name, Password) VALUES ('" + email + "', '" + name + "', '" + hash + "')";
                     db.query(sqlQuery, (err, result) => {
                         if(err) {
                             res.redirect('/users/register')
@@ -84,9 +101,14 @@ const getLanding = (req,res) => {
     res.render("users/landing.ejs");
 };
 
+const getDashboard = (req,res) => {
+    res.render("dashboard.ejs");
+};
+
 module.exports = {
     getRegister, 
     postLogin, 
     postRegister, 
     getLogin,
-    getLanding}
+    getLanding,
+    getDashboard}
