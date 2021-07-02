@@ -3,7 +3,5 @@ const app = require('./app');
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    console.log(`server is running at PORT ${PORT}`);
+    console.log(`App is running at http:\\localhost:${PORT}`);
 });
-
-module.exports = app;
