@@ -18,7 +18,6 @@ userRoutes.post("/users/login",postLogin);
 userRoutes.get("/users/register",getRegister);
 userRoutes.post("/users/register",postRegister);
 userRoutes.get('/logout',(req,res)=>{
-    req.logout();
     res.redirect("/");
 })
 

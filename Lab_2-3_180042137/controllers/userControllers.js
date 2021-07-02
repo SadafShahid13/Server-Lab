@@ -21,6 +21,7 @@ const getLogin = (req,res) => {
 const postLogin = (req,res) => {
     var {email, password} = req.body;
     var sqlQuery = "SELECT password FROM users WHERE Email='" + email + "'";
+    const errors = []
     db.query(sqlQuery, (err, result) => {
         if(err) {
             res.redirect('/users/login')
