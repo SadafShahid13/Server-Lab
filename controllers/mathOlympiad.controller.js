@@ -86,12 +86,12 @@ const deleteMO = (req, res) => {
 
   MathOlympiad.deleteOne({ _id: req.params.id })
     .then(() => {
-      let error = "Data has been deleted successfully!";
+      error = "Data has been deleted successfully!";
       req.flash("error", error);
       res.redirect("/MathOlympiad/list");
     })
     .catch(() => {
-      let error = "Failed to delete data";
+      error = "Failed to delete data";
       req.flash("error", error);
       res.redirect("/MathOlympiad/list");
     });
