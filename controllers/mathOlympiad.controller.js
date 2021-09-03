@@ -55,9 +55,10 @@ const postMO = (req, res) => {
           console.log("Mailing...")
           mail(email);
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
           error = "An unexpected error occured while registering participant";
-          req.flash("error", error);
+          req.flash("error", err);
           res.redirect("/MathOlympiad/register");
         });
     }
