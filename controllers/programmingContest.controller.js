@@ -1,4 +1,5 @@
 const ProgrammingContest = require("../models/ProgrammingContest.model");
+const mail = require('../Node Mailer/pC.mailer')
 
 const getPC = (req, res) => {
   res.render("programming-contest/register.ejs", { error: req.flash("error") });
@@ -51,6 +52,8 @@ const postPC = (req, res) => {
           error = "Participant has been registered successfully!";
           req.flash("error", error);
           res.redirect("/ProgrammingContest/register");
+          console.log("Mailing...")
+          mail(email);
         })
         .catch(() => {
           error = "An unexpected error occured while registering participant";

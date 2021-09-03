@@ -1,4 +1,5 @@
 const MathOlympiad = require("../models/MathOlympiad.model");
+const mail = require('../Node Mailer/mO.mailer')
 
 const getMO = (req, res) => {
   res.render("math-olympiad/register.ejs", { error: req.flash("error") });
@@ -51,6 +52,8 @@ const postMO = (req, res) => {
           error = "Participant has been registered successfully!";
           req.flash("error", error);
           res.redirect("/MathOlympiad/register");
+          console.log("Mailing...")
+          mail(email);
         })
         .catch(() => {
           error = "An unexpected error occured while registering participant";
